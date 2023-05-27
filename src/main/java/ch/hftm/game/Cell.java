@@ -70,4 +70,18 @@ public class Cell {
     public Cell[] getNeighbours() {
         return this.neighbours;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                " game='" + getGame() + "'" +
+                ", x='" + getX() + "'" +
+                ", y='" + getY() + "'" +
+                ", isMine='" + getIsMine() + "'" +
+                ", isRevealed='" + getIsRevealed() + "'" +
+                ", minesInProximity='" + getMinesInProximity() + "'" +
+                ", neighbours='" + getNeighbours() + "'" +
+                "}";
+    }
+
 }

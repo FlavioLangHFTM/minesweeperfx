@@ -60,4 +60,14 @@ public class Game {
         return this.mineField;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                " fieldSize='" + getFieldSize() + "'" +
+                ", mineCount='" + getMineCount() + "'" +
+                ", minesFound='" + getMinesFound() + "'" +
+                ", mineField='" + getMineField() + "'" +
+                "}";
+    }
+
 }
