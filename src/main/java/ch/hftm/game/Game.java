@@ -1,5 +1,10 @@
 package ch.hftm.game;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Game {
 
     // The size of the minefield
@@ -24,7 +29,46 @@ public class Game {
 
     // Populate the minefield, distribute mines randomly and calculate cell numbers
     public void startGame() {
-        // TODO: Implement
+
+        // Populate the field with empty cells
+        for (int x = 0; x < this.fieldSize; x++) {
+            for (int y = 0; y < this.fieldSize; y++) {
+                this.mineField[x][y] = new Cell(this, x, y, false);
+            }
+        }
+
+        // Set the chosen cells to be mines
+        for (Point p : generateMineLocations()) {
+            this.mineField[(int) p.getX()][(int) p.getY()].setIsMine(true);
+        }
+
+        // Compute the number for every cell
+        for (int x = 0; x < this.fieldSize; x++) {
+            for (int y = 0; y < this.fieldSize; y++) {
+                this.mineField[x][y].findNeighbours();
+            }
+        }
+    }
+
+    // Generate random mine locations
+    public List<Point> generateMineLocations() {
+        List<Point> locations = new ArrayList<Point>();
+        Random random = new Random();
+        while (locations.size() > this.mineCount) {
+            Point point = new Point(random.nextInt(this.fieldSize), random.nextInt(this.fieldSize));
+            boolean found = false;
+            for (Point p : locations) {
+                if ((int) point.getX() == (int) p.getX() && (int) point.getY() == (int) p.getY()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                locations.add(point);
+            }
+        }
+
+        return locations;
     }
 
     // Process mouse Input and Reveal/Flag the clicked cell

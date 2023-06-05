@@ -9,7 +9,7 @@ public class Cell {
     private final int x, y;
 
     // Is the cell a mine
-    private final boolean isMine;
+    private boolean isMine;
 
     // Is the cell revealed
     private boolean isRevealed = false;
@@ -53,6 +53,10 @@ public class Cell {
 
     public boolean getIsMine() {
         return this.isMine;
+    }
+
+    public void setIsMine(boolean isMine) {
+        this.isMine = isMine;
     }
 
     public boolean getIsRevealed() {
