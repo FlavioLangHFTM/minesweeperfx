@@ -78,8 +78,15 @@ public class Game {
 
     // Check if the game is over
     public boolean isFinished() {
-        // TODO: Implement
-        return false;
+        return this.mineCount == this.minesFound;
+    }
+
+    // Get a cell by its coordinates in the minefield (checks out of bounds)
+    public Cell getCell(int x, int y) {
+        if ((x < 0 || x >= this.fieldSize) || (y < 0 || y >= this.fieldSize)) {
+            return null;
+        }
+        return this.mineField[x][y];
     }
 
     // Getters and Setters
