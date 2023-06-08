@@ -14,6 +14,9 @@ public class Cell {
     // Is the cell revealed
     private boolean isRevealed = false;
 
+    // Is the cell flagged as a mine
+    private boolean isFlagged = false;
+
     // How many mines are in proximity to the cell
     private int minesInProximity;
 
@@ -61,12 +64,19 @@ public class Cell {
     public void reveal() {
         // TODO: Display the Cell according to the number of mines nearby
 
-        // Reveal all the neighbouring cells that have no mines nearby
-        for (Cell cell : this.neighbours) {
-            if (cell != null && !cell.getIsRevealed() && cell.getMinesInProximity() == 0 && !cell.getIsMine()) {
-                cell.reveal();
+        // Only reveal recursively if the game is not yet finished
+        if (!this.game.getIsFinished())
+            // Reveal all the neighbouring cells that have no mines nearby
+            for (Cell cell : this.neighbours) {
+                if (cell != null && !cell.getIsRevealed() && cell.getMinesInProximity() == 0 && !cell.getIsMine()) {
+                    cell.reveal();
+                }
             }
-        }
+    }
+
+    // Flag the cell
+    public void flag() {
+        // TODO: Display Flag on cell
     }
 
     // Getters and Setters
@@ -97,6 +107,14 @@ public class Cell {
 
     public void setIsRevealed(boolean isRevealed) {
         this.isRevealed = isRevealed;
+    }
+
+    public boolean getIsFlagged() {
+        return this.isFlagged;
+    }
+
+    public void setIsFlagged(boolean isFlagged) {
+        this.isFlagged = isFlagged;
     }
 
     public int getMinesInProximity() {

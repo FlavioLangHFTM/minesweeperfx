@@ -21,6 +21,8 @@ public class Game {
     // cells
     private Cell[][] mineField;
 
+    private boolean isFinished = false;
+
     public Game(int fieldSize, int mineCount) {
         this.fieldSize = fieldSize;
         this.mineCount = mineCount;
@@ -72,13 +74,34 @@ public class Game {
     }
 
     // Process mouse Input and Reveal/Flag the clicked cell
-    public void doTurn() {
-        // TODO: Implement
+    public void doTurn(int x, int y) {
+
+        Cell clickedCell = this.getCell(x, y);
+        if (clickedCell != null && !clickedCell.getIsRevealed()) {
+            if (true) { // Reveal
+                if (clickedCell.getIsMine()) {
+                    this.isFinished = true;
+                } else {
+                    clickedCell.reveal();
+                }
+            } else { // Flag
+                clickedCell.flag();
+            }
+        }
+
+        if (this.isFinished || this.minesFound >= this.mineCount) {
+            this.revealAll();
+        }
+
     }
 
-    // Check if the game is over
-    public boolean isFinished() {
-        return this.mineCount == this.minesFound;
+    // Reveal all cells when game is finished
+    public void revealAll() {
+        for (int x = 0; x < this.fieldSize; x++) {
+            for (int y = 0; y < this.fieldSize; y++) {
+                this.mineField[x][y].reveal();
+            }
+        }
     }
 
     // Get a cell by its coordinates in the minefield (checks out of bounds)
@@ -109,6 +132,10 @@ public class Game {
 
     public Cell[][] getMineField() {
         return this.mineField;
+    }
+
+    public boolean getIsFinished() {
+        return this.isFinished;
     }
 
     @Override
