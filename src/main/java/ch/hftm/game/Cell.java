@@ -1,6 +1,10 @@
 package ch.hftm.game;
 
-public class Cell {
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
+
+public class Cell extends Button {
 
     // The instance of the Game the cell is part of
     private final Game game;
@@ -29,6 +33,11 @@ public class Cell {
         this.x = x;
         this.y = y;
         this.isMine = isMine;
+        this.setOnMouseClicked(event -> this.game.doTurn(x, y, event));
+
+        this.setAlignment(Pos.CENTER);
+        this.setMaxWidth(Double.MAX_VALUE);
+        this.setPrefHeight(Double.MAX_VALUE);
     }
 
     // Find neighbours of the cell
@@ -55,28 +64,71 @@ public class Cell {
 
         // Find the four neighbouring cells
         this.neighbours[0] = this.game.getCell(this.x, this.y - 1); // North
-        this.neighbours[0] = this.game.getCell(this.x + 1, this.y); // East
-        this.neighbours[0] = this.game.getCell(this.x, this.y + 1); // South
-        this.neighbours[0] = this.game.getCell(this.x - 1, this.y); // West
+        this.neighbours[1] = this.game.getCell(this.x + 1, this.y); // East
+        this.neighbours[2] = this.game.getCell(this.x, this.y + 1); // South
+        this.neighbours[3] = this.game.getCell(this.x - 1, this.y); // West
     }
 
     // Reveal the current cell
-    public void reveal() {
-        // TODO: Display the Cell according to the number of mines nearby
+    public void reveal(boolean lastIteration) {
+        this.isRevealed = true;
+        this.setText(String.valueOf(this.minesInProximity));
+        this.setStyle("-fx-font-size: 40");
+
+        switch (this.minesInProximity) {
+            case 0:
+                this.setText("");
+                this.setStyle("-fx-background-color: DarkGray");
+                break;
+            case 1:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: blue; -fx-font-weight: bold");
+                break;
+            case 2:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: green; -fx-font-weight: bold");
+                break;
+            case 3:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: red; -fx-font-weight: bold");
+                break;
+            case 4:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: DarkBlue; -fx-font-weight: bold");
+                break;
+            case 5:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: DarkRed; -fx-font-weight: bold");
+                break;
+            case 6:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: teal; -fx-font-weight: bold");
+                break;
+            case 7:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: black; -fx-font-weight: bold");
+                break;
+            case 8:
+                this.setStyle("-fx-background-color: DarkGray; -fx-text-fill: gray; -fx-font-weight: bold");
+                break;
+        }
+
+        if (isMine) {
+            this.setText("X");
+            if (this.game.getIsWon()) {
+                this.setStyle("-fx-background-color: green");
+            } else {
+                this.setStyle("-fx-background-color: red");
+            }
+        }
 
         // Only reveal recursively if the game is not yet finished
         if (!this.game.getIsFinished())
             // Reveal all the neighbouring cells that have no mines nearby
             for (Cell cell : this.neighbours) {
-                if (cell != null && !cell.getIsRevealed() && cell.getMinesInProximity() == 0 && !cell.getIsMine()) {
-                    cell.reveal();
+                if (cell != null && !cell.getIsRevealed() && !lastIteration && !cell.getIsMine()) {
+                    cell.reveal(cell.getMinesInProximity() != 0);
                 }
             }
     }
 
     // Flag the cell
     public void flag() {
-        // TODO: Display Flag on cell
+        this.setText("<>");
+        this.setStyle("-fx-font-weight: bold; -fx-background-color: yellow;");
     }
 
     // Getters and Setters

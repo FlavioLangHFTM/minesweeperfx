@@ -22,24 +22,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
 
-        Game testGame = new Game(9, 10);
-
-        System.out.println("Game:");
-        System.out.println(testGame.toString());
-
-        List<Cell> cells = new ArrayList<Cell>();
-
-        for (int i = 0; i < 10; i++) {
-            Cell cell = new Cell(testGame, i, i, false);
-            cells.add(cell);
-        }
-
-        System.out.println("Cells:");
-        for (Cell cell : cells) {
-            System.out.println(cell.toString());
-        }
-
-        // launch();
+        launch();
     }
 
     @Override

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.event.Event;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
 public class Game {
 
     // The size of the minefield
@@ -22,6 +26,8 @@ public class Game {
     private Cell[][] mineField;
 
     private boolean isFinished = false;
+
+    private boolean isWon = false;
 
     public Game(int fieldSize, int mineCount) {
         this.fieldSize = fieldSize;
@@ -41,6 +47,7 @@ public class Game {
 
         // Set the chosen cells to be mines
         for (Point p : generateMineLocations()) {
+            System.out.println(p);
             this.mineField[(int) p.getX()][(int) p.getY()].setIsMine(true);
         }
 
@@ -54,9 +61,10 @@ public class Game {
 
     // Generate random mine locations
     public List<Point> generateMineLocations() {
+        System.out.println("GotHEre");
         List<Point> locations = new ArrayList<Point>();
         Random random = new Random();
-        while (locations.size() > this.mineCount) {
+        while (locations.size() < this.mineCount) {
             Point point = new Point(random.nextInt(this.fieldSize), random.nextInt(this.fieldSize));
             boolean found = false;
             for (Point p : locations) {
@@ -74,22 +82,24 @@ public class Game {
     }
 
     // Process mouse Input and Reveal/Flag the clicked cell
-    public void doTurn(int x, int y) {
+    public void doTurn(int x, int y, MouseEvent event) {
 
         Cell clickedCell = this.getCell(x, y);
         if (clickedCell != null && !clickedCell.getIsRevealed()) {
-            if (true) { // Reveal
+            if (event.getButton() == MouseButton.PRIMARY) { // Reveal
                 if (clickedCell.getIsMine()) {
                     this.isFinished = true;
                 } else {
-                    clickedCell.reveal();
+                    clickedCell.reveal(clickedCell.getMinesInProximity() != 0);
                 }
-            } else { // Flag
+            } else if (event.getButton() == MouseButton.SECONDARY) { // Flag
                 clickedCell.flag();
             }
         }
 
-        if (this.isFinished || this.minesFound >= this.mineCount) {
+        this.isWon = this.minesFound >= this.mineCount;
+
+        if (this.isFinished || this.isWon) {
             this.revealAll();
         }
 
@@ -99,7 +109,7 @@ public class Game {
     public void revealAll() {
         for (int x = 0; x < this.fieldSize; x++) {
             for (int y = 0; y < this.fieldSize; y++) {
-                this.mineField[x][y].reveal();
+                this.mineField[x][y].reveal(false);
             }
         }
     }
@@ -136,6 +146,10 @@ public class Game {
 
     public boolean getIsFinished() {
         return this.isFinished;
+    }
+
+    public boolean getIsWon() {
+        return this.isWon;
     }
 
     @Override
