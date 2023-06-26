@@ -38,4 +38,26 @@ public class Game {
         return false;
     }
 
+    // Getters and Setters
+
+    public int getFieldSize() {
+        return this.fieldSize;
+    }
+
+    public int getMineCount() {
+        return this.mineCount;
+    }
+
+    public int getMinesFound() {
+        return this.minesFound;
+    }
+
+    public void setMinesFound(int minesFound) {
+        this.minesFound = minesFound;
+    }
+
+    public Cell[][] getMineField() {
+        return this.mineField;
+    }
+
 }

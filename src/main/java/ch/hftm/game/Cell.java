@@ -26,4 +26,48 @@ public class Cell {
         this.y = y;
         this.isMine = isMine;
     }
+
+    // Find neighbours of the cell
+    public void findNeighbours() {
+        // TODO: Implement
+    }
+
+    // Reveal the current cell
+    public void reveal() {
+        // TODO: Implement
+    }
+
+    // Getters and Setters
+
+    public Game getGame() {
+        return this.game;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public boolean getIsMine() {
+        return this.isMine;
+    }
+
+    public boolean getIsRevealed() {
+        return this.isRevealed;
+    }
+
+    public void setIsRevealed(boolean isRevealed) {
+        this.isRevealed = isRevealed;
+    }
+
+    public int getMinesInProximity() {
+        return this.minesInProximity;
+    }
+
+    public Cell[] getNeighbours() {
+        return this.neighbours;
+    }
 }
